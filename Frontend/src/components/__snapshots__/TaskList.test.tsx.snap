@@ -1,0 +1,18 @@
+// Vitest Snapshot v1
+
+exports[`TaskList.tsx > taskList.tsx > will create and match snapshot 1`] = `
+<div>
+  <div>
+    <h1>
+      Pending
+    </h1>
+    <ul />
+  </div>
+  <div>
+    <h1>
+      Completed
+    </h1>
+    <ul />
+  </div>
+</div>
+`;

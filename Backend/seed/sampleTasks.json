@@ -1,0 +1,42 @@
+[
+  {
+    "model": "ToDoApp.Task",
+    "pk": 1,
+    "fields": {
+      "title": "wake up",
+      "status": false
+    }
+  },
+  {
+    "model": "ToDoApp.Task",
+    "pk": 2,
+    "fields": {
+      "title": "grab a brush",
+      "status": false
+    }
+  },
+  {
+    "model": "ToDoApp.Task",
+    "pk": 3,
+    "fields": {
+      "title": "and put a little make-up",
+      "status": false
+    }
+  },
+  {
+    "model": "ToDoApp.Task",
+    "pk": 4,
+    "fields": {
+      "title": "hide the scars",
+      "status": true
+    }
+  },
+  {
+    "model": "ToDoApp.Task",
+    "pk": 5,
+    "fields": {
+      "title": "to fade away the shake-up",
+      "status": true
+    }
+  }
+]
