@@ -11,5 +11,5 @@ def index(request):
 @api_view(['GET'])
 def list_tasks(request):
     if request.method == 'GET':
-        resp = list(Task.objects.all().values())
-        return JsonResponse({'tasks': resp})
+        tasks = list(Task.objects.all().values())
+        return JsonResponse({'tasks': tasks})

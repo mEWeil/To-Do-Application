@@ -1,30 +1,22 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import CsrfToken from './CsrfToken';
+import { ITask } from '../interfaces/ITask';
 
-export interface ITask {
-  id: number;
-  title: string;
-  status: boolean;
-}
-
-export async function getTasks(): Promise<ITask[]> {
-  const resp = await axios.get('list_tasks');
-  return resp.data.tasks;
+export async function fetchTasks(): Promise<ITask[]> {
+  const taskListResp = await axios.get('list_tasks');
+  return taskListResp.data.tasks;
 }
 
 export default function TaskList() {
   const [tasks, setTasks] = useState<ITask[]>([]);
 
   useEffect(() => {
-    const getResp = async () => {
-      const resp = await getTasks();
-      setTasks(resp);
+    const taskHandler = async () => {
+      const taskList = await fetchTasks();
+      setTasks(taskList);
     };
-    getResp();
+    taskHandler();
   }, []);
-
-  CsrfToken();
 
   return (
     <div>
@@ -32,11 +24,11 @@ export default function TaskList() {
         <h1>Pending</h1>
         <ul>
           {tasks
-            .filter((task) => task.status === false)
+            .filter((task) => task.isCompleted === false)
             .map((task) => {
               return (
                 <li key={task.id}>
-                  `{task.id}) {task.title}`
+                  {task.id}) {task.title}
                 </li>
               );
             })}
@@ -46,11 +38,11 @@ export default function TaskList() {
         <h1>Completed</h1>
         <ul>
           {tasks
-            .filter((task) => task.status === true)
+            .filter((task) => task.isCompleted === true)
             .map((task) => {
               return (
                 <li key={task.id}>
-                  `{task.id}) {task.title}`
+                  {task.id}) {task.title}
                 </li>
               );
             })}
