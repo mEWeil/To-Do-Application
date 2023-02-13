@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ITask } from '../interfaces/ITask';
+import Task from './Task';
 
 export async function fetchTasks(): Promise<ITask[]> {
   const taskListResp = await axios.get('list_tasks');
@@ -23,29 +24,21 @@ export default function TaskList() {
       <div>
         <h1>Pending</h1>
         <ul>
-          {tasks
-            .filter((task) => task.isCompleted === false)
-            .map((task) => {
-              return (
-                <li key={task.id}>
-                  {task.id}) {task.title}
-                </li>
-              );
-            })}
+          {tasks.map((task) =>
+            task.isCompleted === false ? (
+              <Task key={task.id} task={task} />
+            ) : null
+          )}
         </ul>
       </div>
       <div>
         <h1>Completed</h1>
         <ul>
-          {tasks
-            .filter((task) => task.isCompleted === true)
-            .map((task) => {
-              return (
-                <li key={task.id}>
-                  {task.id}) {task.title}
-                </li>
-              );
-            })}
+          {tasks.map((task) =>
+            task.isCompleted === true ? (
+              <Task key={task.id} task={task} />
+            ) : null
+          )}
         </ul>
       </div>
     </div>

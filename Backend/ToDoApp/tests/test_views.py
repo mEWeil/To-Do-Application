@@ -7,9 +7,8 @@ class TestViews(TestCase):
   def setup(self):
     self.client = Client()
 
-  def test_list_tasks(self):
+  def test_list_tasks_returns_object_with_array_of_tasks(self):
     task_list_response = self.client.get(reverse('list_tasks'))
     task_list = json.loads(task_list_response.content)
-    print(task_list)
-    self.assertEquals(task_list, { 'tasks': [] })
+    self.assertEqual(task_list, { 'tasks': [] })
 

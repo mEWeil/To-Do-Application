@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from .models import *
 
 def index(request):
@@ -8,8 +8,7 @@ def index(request):
     resp = HttpResponse(file)
     return resp
 
-@api_view(['GET'])
-def list_tasks(request):
-    if request.method == 'GET':
+class Task_handler(APIView):
+    def get(self, request):
         tasks = list(Task.objects.all().values())
         return JsonResponse({'tasks': tasks})
