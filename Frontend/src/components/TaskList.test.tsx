@@ -4,9 +4,7 @@ import { render, screen } from '@testing-library/react';
 import axios from 'axios';
 import TaskList, { fetchTasks } from './TaskList';
 
-
 vi.mock('axios');
-// vi.mock('./Task.tsx', () => <div data-testid='task' />);
 
 describe('TaskList', () => {
   it('will render an h1 with Pending', () => {
