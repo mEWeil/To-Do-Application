@@ -12,12 +12,12 @@ class TestViews(TestCase):
     task_list = json.loads(task_list_response.content)
     self.assertEqual(task_list, { 'tasks': [] })
       
-  def test_new_task_returns_false_with_improper_input(self):
+  def test_new_task_returns_false_without_title(self):
       response=self.client.post(reverse('add_task'))
       body=json.loads(response.content)
       self.assertFalse(body['taskCreated'])
       
-  def test_new_task_returns_true_with_proper_input(self):
+  def test_new_task_returns_true_with_title(self):
       response=self.client.post(reverse('add_task'),{'title': 'test'})
       body=json.loads(response.content)
       self.assertTrue(body['taskCreated'])

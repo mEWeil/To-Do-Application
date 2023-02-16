@@ -7,7 +7,7 @@ const setTasks = vi.fn();
 const tasks: ITask[] = [];
 
 describe('Header', () => {
-  it('should render the elements', () => {
+  it('should render the new task header', () => {
     render(<Header tasks={tasks} setTasks={setTasks} />);
 
     expect(

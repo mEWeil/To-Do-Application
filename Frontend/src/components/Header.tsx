@@ -10,40 +10,46 @@ type FormValues = {
 };
 
 export default function Header({ tasks, setTasks }: IHeaderProps) {
-  const [newTaskInputVal, setNewTaskInputVal] = useState('');
+  const [newTask, setNewTask] = useState('');
+  const [errorMessage, setErrorMessage] = useState<boolean>(false);
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    axios
-      .post('add_task', { title: data.newTaskTitle })
-      .then((response) => {
-        if (response.data.taskCreated === true) {
-          setTasks([
-            ...tasks,
-            {
-              id: response.data.id,
-              title: data.newTaskTitle,
-              isCompleted: false,
-            },
-          ]);
-        }
-        setNewTaskInputVal('');
-        reset();
-      })
-      .catch((error) => console.log(error));
+    axios.post('add_task', { title: data.newTaskTitle }).then((response) => {
+      if (response.data.taskCreated === true) {
+        setTasks([
+          ...tasks,
+          {
+            id: response.data.id,
+            title: data.newTaskTitle,
+            isCompleted: false,
+          },
+        ]);
+      } else {
+        setTimeout(() => {
+          setErrorMessage(true);
+        }, 3000);
+        setErrorMessage(false);
+      }
+      setNewTask('');
+      reset();
+    });
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor="newTaskInput">
-        New Task:
-        <input
-          type="text"
-          id="newTaskInput"
-          {...register('newTaskTitle')}
-          placeholder="What's next on the list?"
-          onChange={(e) => setNewTaskInputVal(e.target.value)}
-        />
-      </label>
-      <input type="submit" value="Add Task" disabled={!newTaskInputVal} />
-    </form>
+    <>
+      {errorMessage ? <p>There was an error adding the message.</p> : null}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor="newTaskInput">
+          New Task:
+          <input
+            type="text"
+            id="newTaskInput"
+            {...register('newTaskTitle')}
+            placeholder="What's next on the list?"
+            onChange={(e) => setNewTask(e.target.value)}
+          />
+        </label>
+        <input type="submit" value="Add Task" disabled={!newTask} />
+      </form>
+    </>
   );
 }
