@@ -12,3 +12,10 @@ class Task_handler(APIView):
     def get(self, request):
         tasks = list(Task.objects.all().values())
         return JsonResponse({'tasks': tasks})
+    def post(self, request):
+        try:
+            newTask=Task.objects.create(title=request.data['title'])
+            newTask.save()
+            return JsonResponse({'taskCreated': True, 'id': newTask.id})
+        except:
+            return JsonResponse({'taskCreated': False})
