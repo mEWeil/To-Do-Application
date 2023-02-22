@@ -11,24 +11,36 @@ export async function fetchTasks(): Promise<ITask[]> {
 
 export default function TaskList() {
   const [tasks, setTasks] = useState<ITask[]>([]);
+  const [selectedTasks, setSelectedTasks] = useState<number[]>([]);
+
+  const taskHandler = async () => {
+    const taskList = await fetchTasks();
+    setTasks(taskList);
+  };
 
   useEffect(() => {
-    const taskHandler = async () => {
-      const taskList = await fetchTasks();
-      setTasks(taskList);
-    };
     taskHandler();
   }, []);
 
   return (
     <div>
-      <Header tasks={tasks} setTasks={setTasks} />
+      <Header
+        tasks={tasks}
+        setTasks={setTasks}
+        selectedTasks={selectedTasks}
+        taskHandler={taskHandler}
+      />
       <div>
         <h1>Pending</h1>
         <ul>
           {tasks.map((task) =>
             task.isCompleted === false ? (
-              <Task key={task.id} task={task} />
+              <Task
+                key={task.id}
+                task={task}
+                selectedTasks={selectedTasks}
+                setSelectedTasks={setSelectedTasks}
+              />
             ) : null
           )}
         </ul>
@@ -38,7 +50,12 @@ export default function TaskList() {
         <ul>
           {tasks.map((task) =>
             task.isCompleted === true ? (
-              <Task key={task.id} task={task} />
+              <Task
+                key={task.id}
+                task={task}
+                selectedTasks={selectedTasks}
+                setSelectedTasks={setSelectedTasks}
+              />
             ) : null
           )}
         </ul>
