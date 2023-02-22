@@ -28,3 +28,11 @@ class Task_handler(APIView):
             return JsonResponse({'statusChange': True})
         except:
             return JsonResponse({'statusChange': False})
+    def delete(self, request):
+        try:
+            for id in request.data:
+                task = Task.objects.get(id=id)
+                task.delete()
+            return JsonResponse({'taskDeleted': True})
+        except:
+            return JsonResponse({'taskDeleted': False})
