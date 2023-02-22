@@ -16,10 +16,18 @@ class TestUrls(TestCase):
     response = self.client.get(reverse('index'))
     self.assertEquals(response.status_code, 200)
 
-  def test_list_tasks_url_is_resolved(self):
-    url = reverse('list_tasks')
-    self.assertEqual(resolve(url).func, views.list_tasks)
+  def test_task_list_url_is_resolved(self):
+    url = reverse('task_list')
+    self.assertEqual(resolve(url).func.view_class, Task_handler)
 
-  def test_list_tasks_returns_successful_response(self):
-    response = self.client.get(reverse('list_tasks'))
+  def test_task_list_returns_successful_response(self):
+    response = self.client.get(reverse('task_list'))
+    self.assertEquals(response.status_code, 200)
+
+  def test_add_task_url_is_resolved(self):
+    url = reverse('add_task')
+    self.assertEqual(resolve(url).func.view_class, Task_handler)
+
+  def test_add_task_returns_successful_response(self):
+    response = self.client.post(reverse('add_task'), {'title': 'test'})
     self.assertEquals(response.status_code, 200)
