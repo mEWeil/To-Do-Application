@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-console */
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { IHeaderProps } from '../interfaces/IHeaderProps';
 
@@ -9,9 +9,15 @@ type FormValues = {
   newTaskTitle: string;
 };
 
-export default function Header({ tasks, setTasks }: IHeaderProps) {
+export default function Header({
+  tasks,
+  setTasks,
+  selectedTasks,
+  taskHandler,
+}: IHeaderProps) {
   const [newTask, setNewTask] = useState('');
-  const [errorMessage, setErrorMessage] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [displayStatusButton, setDisplayStatusButton] = useState(false);
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     axios.post('add_task', { title: data.newTaskTitle }).then((response) => {
@@ -34,9 +40,32 @@ export default function Header({ tasks, setTasks }: IHeaderProps) {
       reset();
     });
   };
+  const statusChange = (data: number[]) => {
+    axios
+      .put('status_change', data)
+      .then((res) => console.log(res))
+      .then(() => taskHandler())
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    function displayButton() {
+      return selectedTasks.length > 0
+        ? setDisplayStatusButton(true)
+        : setDisplayStatusButton(false);
+    }
+    displayButton();
+  }, [selectedTasks.length]);
+
   return (
     <>
       {errorMessage ? <p>There was an error adding the message.</p> : null}
+      <button
+        type="button"
+        disabled={!displayStatusButton}
+        onClick={() => statusChange(selectedTasks)}
+      >
+        Change Status
+      </button>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="newTaskInput">
           New Task:
