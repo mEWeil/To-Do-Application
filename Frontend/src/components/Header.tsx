@@ -17,7 +17,7 @@ export default function Header({
 }: IHeaderProps) {
   const [newTask, setNewTask] = useState('');
   const [errorMessage, setErrorMessage] = useState(false);
-  const [displayStatusButton, setDisplayStatusButton] = useState(false);
+  const [displayButtons, setDisplayButtons] = useState(false);
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     axios.post('add_task', { title: data.newTaskTitle }).then((response) => {
@@ -47,11 +47,18 @@ export default function Header({
       .then(() => taskHandler())
       .catch((err) => console.log(err));
   };
+  const deleteTasks = (data: number[]) => {
+    axios
+      .delete('delete_tasks', { data })
+      .then((res) => console.log(res))
+      .then(() => taskHandler())
+      .catch((err) => console.log(err));
+  };
   useEffect(() => {
     function displayButton() {
       return selectedTasks.length > 0
-        ? setDisplayStatusButton(true)
-        : setDisplayStatusButton(false);
+        ? setDisplayButtons(true)
+        : setDisplayButtons(false);
     }
     displayButton();
   }, [selectedTasks.length]);
@@ -61,10 +68,17 @@ export default function Header({
       {errorMessage ? <p>There was an error adding the message.</p> : null}
       <button
         type="button"
-        disabled={!displayStatusButton}
+        disabled={!displayButtons}
         onClick={() => statusChange(selectedTasks)}
       >
         Change Status
+      </button>
+      <button
+        type="button"
+        disabled={!displayButtons}
+        onClick={() => deleteTasks(selectedTasks)}
+      >
+        Delete
       </button>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="newTaskInput">

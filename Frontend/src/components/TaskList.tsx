@@ -16,6 +16,7 @@ export default function TaskList() {
   const taskHandler = async () => {
     const taskList = await fetchTasks();
     setTasks(taskList);
+    setSelectedTasks([]);
   };
 
   useEffect(() => {
