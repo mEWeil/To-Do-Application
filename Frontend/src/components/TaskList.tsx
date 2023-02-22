@@ -41,6 +41,7 @@ export default function TaskList() {
                 task={task}
                 selectedTasks={selectedTasks}
                 setSelectedTasks={setSelectedTasks}
+                taskHandler={taskHandler}
               />
             ) : null
           )}
@@ -56,6 +57,7 @@ export default function TaskList() {
                 task={task}
                 selectedTasks={selectedTasks}
                 setSelectedTasks={setSelectedTasks}
+                taskHandler={taskHandler}
               />
             ) : null
           )}

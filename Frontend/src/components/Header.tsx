@@ -20,21 +20,22 @@ export default function Header({
   const [displayButtons, setDisplayButtons] = useState(false);
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    axios.post('add_task', { title: data.newTaskTitle }).then((response) => {
-      if (response.data.taskCreated === true) {
+    axios.post('add_task', { title: data.newTaskTitle }).then((res) => {
+      console.log(res.data);
+      if (res.data.taskCreated === true) {
         setTasks([
           ...tasks,
           {
-            id: response.data.id,
+            id: res.data.id,
             title: data.newTaskTitle,
             isCompleted: false,
           },
         ]);
       } else {
         setTimeout(() => {
-          setErrorMessage(true);
+          setErrorMessage(false);
         }, 3000);
-        setErrorMessage(false);
+        setErrorMessage(true);
       }
       setNewTask('');
       reset();
@@ -65,7 +66,7 @@ export default function Header({
 
   return (
     <>
-      {errorMessage ? <p>There was an error adding the message.</p> : null}
+      {errorMessage ? <p>There was an error adding the task.</p> : null}
       <button
         type="button"
         disabled={!displayButtons}
