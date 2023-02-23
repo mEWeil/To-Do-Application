@@ -12,6 +12,8 @@ export async function fetchTasks(): Promise<ITask[]> {
 export default function TaskList() {
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [selectedTasks, setSelectedTasks] = useState<number[]>([]);
+  const [togglePending, setTogglePending] = useState<boolean>(true);
+  const [toggleCompleted, setToggleCompleted] = useState<boolean>(true);
 
   const taskHandler = async () => {
     const taskList = await fetchTasks();
@@ -30,39 +32,67 @@ export default function TaskList() {
         setTasks={setTasks}
         selectedTasks={selectedTasks}
         taskHandler={taskHandler}
+        togglePending={togglePending}
+        toggleCompleted={toggleCompleted}
       />
-      <div>
-        <h1>Pending</h1>
-        <ul>
-          {tasks.map((task) =>
-            task.isCompleted === false ? (
-              <Task
-                key={task.id}
-                task={task}
-                selectedTasks={selectedTasks}
-                setSelectedTasks={setSelectedTasks}
-                taskHandler={taskHandler}
-              />
-            ) : null
-          )}
-        </ul>
-      </div>
-      <div>
-        <h1>Completed</h1>
-        <ul>
-          {tasks.map((task) =>
-            task.isCompleted === true ? (
-              <Task
-                key={task.id}
-                task={task}
-                selectedTasks={selectedTasks}
-                setSelectedTasks={setSelectedTasks}
-                taskHandler={taskHandler}
-              />
-            ) : null
-          )}
-        </ul>
-      </div>
+      <label htmlFor="Pending">
+        Pending
+        <input
+          type="checkbox"
+          defaultChecked
+          onChange={() => setTogglePending(!togglePending)}
+          name="Pending"
+        />
+      </label>
+      <label htmlFor="Completed">
+        Completed
+        <input
+          type="checkbox"
+          defaultChecked
+          onChange={() => setToggleCompleted(!toggleCompleted)}
+          value="Completed"
+        />
+      </label>
+      {togglePending === true ? (
+        <div>
+          <h1>Pending</h1>
+          <ul>
+            {tasks.map((task) =>
+              task.isCompleted === false ? (
+                <Task
+                  key={task.id}
+                  task={task}
+                  selectedTasks={selectedTasks}
+                  setSelectedTasks={setSelectedTasks}
+                  taskHandler={taskHandler}
+                />
+              ) : null
+            )}
+          </ul>
+        </div>
+      ) : (
+        ''
+      )}
+      {toggleCompleted === true ? (
+        <div>
+          <h1>Completed</h1>
+          <ul>
+            {tasks.map((task) =>
+              task.isCompleted === true ? (
+                <Task
+                  key={task.id}
+                  task={task}
+                  selectedTasks={selectedTasks}
+                  setSelectedTasks={setSelectedTasks}
+                  taskHandler={taskHandler}
+                />
+              ) : null
+            )}
+          </ul>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 }
