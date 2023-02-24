@@ -5,4 +5,6 @@ export interface IHeaderProps {
   setTasks: (allTasks: ITask[]) => void;
   selectedTasks: number[];
   taskHandler: () => void;
+  togglePending: boolean;
+  toggleCompleted: boolean;
 }

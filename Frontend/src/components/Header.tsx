@@ -14,6 +14,8 @@ export default function Header({
   setTasks,
   selectedTasks,
   taskHandler,
+  togglePending,
+  toggleCompleted,
 }: IHeaderProps) {
   const [newTask, setNewTask] = useState('');
   const [errorMessage, setErrorMessage] = useState(false);
@@ -63,6 +65,20 @@ export default function Header({
     }
     displayButton();
   }, [selectedTasks.length]);
+  useEffect(() => {
+    if (toggleCompleted === false) {
+      setDisplayButtons(false);
+    } else if (toggleCompleted === true && selectedTasks.length !== 0) {
+      setDisplayButtons(true);
+    }
+  }, [toggleCompleted, selectedTasks.length]);
+  useEffect(() => {
+    if (togglePending === false) {
+      setDisplayButtons(false);
+    } else if (togglePending === true && selectedTasks.length !== 0) {
+      setDisplayButtons(true);
+    }
+  }, [togglePending, selectedTasks.length]);
 
   return (
     <>
