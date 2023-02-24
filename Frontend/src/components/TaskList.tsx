@@ -12,8 +12,8 @@ export async function fetchTasks(): Promise<ITask[]> {
 export default function TaskList() {
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [selectedTasks, setSelectedTasks] = useState<number[]>([]);
-  const [togglePending, setTogglePending] = useState<boolean>(true);
-  const [toggleCompleted, setToggleCompleted] = useState<boolean>(true);
+  const [showPending, setshowPending] = useState<boolean>(true);
+  const [showCompleted, setshowCompleted] = useState<boolean>(true);
 
   const taskHandler = async () => {
     const taskList = await fetchTasks();
@@ -32,15 +32,15 @@ export default function TaskList() {
         setTasks={setTasks}
         selectedTasks={selectedTasks}
         taskHandler={taskHandler}
-        togglePending={togglePending}
-        toggleCompleted={toggleCompleted}
+        showPending={showPending}
+        showCompleted={showCompleted}
       />
       <label htmlFor="Pending">
         Pending
         <input
           type="checkbox"
           defaultChecked
-          onChange={() => setTogglePending(!togglePending)}
+          onChange={() => setshowPending(!showPending)}
           name="Pending"
         />
       </label>
@@ -49,44 +49,46 @@ export default function TaskList() {
         <input
           type="checkbox"
           defaultChecked
-          onChange={() => setToggleCompleted(!toggleCompleted)}
+          onChange={() => setshowCompleted(!showCompleted)}
           value="Completed"
         />
       </label>
-      {togglePending === true ? (
+      {showPending === true ? (
         <div>
           <h1>Pending</h1>
           <ul>
-            {tasks.map((task) =>
-              task.isCompleted === false ? (
-                <Task
-                  key={task.id}
-                  task={task}
-                  selectedTasks={selectedTasks}
-                  setSelectedTasks={setSelectedTasks}
-                  taskHandler={taskHandler}
-                />
-              ) : null
+            {tasks.map(
+              (task) =>
+                !task.isCompleted && (
+                  <Task
+                    key={task.id}
+                    task={task}
+                    selectedTasks={selectedTasks}
+                    setSelectedTasks={setSelectedTasks}
+                    taskHandler={taskHandler}
+                  />
+                )
             )}
           </ul>
         </div>
       ) : (
         ''
       )}
-      {toggleCompleted === true ? (
+      {showCompleted === true ? (
         <div>
           <h1>Completed</h1>
           <ul>
-            {tasks.map((task) =>
-              task.isCompleted === true ? (
-                <Task
-                  key={task.id}
-                  task={task}
-                  selectedTasks={selectedTasks}
-                  setSelectedTasks={setSelectedTasks}
-                  taskHandler={taskHandler}
-                />
-              ) : null
+            {tasks.map(
+              (task) =>
+                !task.isCompleted && (
+                  <Task
+                    key={task.id}
+                    task={task}
+                    selectedTasks={selectedTasks}
+                    setSelectedTasks={setSelectedTasks}
+                    taskHandler={taskHandler}
+                  />
+                )
             )}
           </ul>
         </div>
